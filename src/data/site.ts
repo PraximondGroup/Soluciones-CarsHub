@@ -6,7 +6,7 @@ export const siteConfig = {
   description:
     'La plataforma peruana de subastas de vehículos — desde económicos hasta deportivos y alta gama. Puja con confianza, transparencia total.',
   email: 'hola@carshub.pe',
-  phone: '+51 1 700 4500',
+  phone: '+51 967 407 817',
   address: 'Av. Javier Prado Este 1234, San Isidro, Lima',
   social: {
     instagram: 'https://instagram.com',
