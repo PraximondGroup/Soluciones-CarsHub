@@ -2,6 +2,17 @@
 
 Plataforma peruana de **subastas de vehículos** — desde económicos hasta deportivos y alta gama, con un servicio premium **CarsHub Deluxe**. Construida con un foco en diseño de alto impacto, modo oscuro impecable y rendimiento.
 
+## Repositorio
+
+```bash
+git clone https://github.com/PraximondGroup/Soluciones-CarsHub.git
+cd "Soluciones CarsHub"
+npm install
+npm run dev
+```
+
+Mantenido por **[PraximondGroup](https://github.com/PraximondGroup)**.
+
 ## Stack
 
 - **Astro 5** (static / Jamstack, SPA con View Transitions)
