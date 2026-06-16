@@ -1,0 +1,56 @@
+---
+// Simulated newsletter signup — validates client-side, no backend.
+---
+<section class="container-app py-16 lg:py-20">
+  <div class="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary to-primary-700 px-6 py-14 text-center sm:px-12">
+    <div class="pointer-events-none absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 20% 20%, white 1px, transparent 1px); background-size: 28px 28px;"></div>
+
+    <div class="relative mx-auto max-w-2xl">
+      <h2 class="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        No te pierdas ninguna subasta
+      </h2>
+      <p class="mx-auto mt-3 max-w-md text-white/85">
+        Recibe alertas de nuevos lotes, cierres próximos y oportunidades Deluxe directo en tu correo.
+      </p>
+
+      <form id="newsletter-form" class="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row" novalidate>
+        <label class="sr-only" for="newsletter-email">Correo electrónico</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          required
+          placeholder="tucorreo@ejemplo.com"
+          class="flex-1 rounded-full border border-white/30 bg-white/95 px-5 py-3 text-sm text-textDark placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-white"
+          style="color:#222"
+        />
+        <button type="submit" class="btn bg-[#1a1a1a] px-6 py-3 text-white hover:bg-black">Suscribirme</button>
+      </form>
+      <p id="newsletter-msg" class="mt-3 min-h-5 text-sm font-medium text-white" role="status" aria-live="polite"></p>
+      <p class="mt-2 text-xs text-white/70">Sin spam. Cancela cuando quieras.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  function bindNewsletter() {
+    const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+    const msg = document.getElementById('newsletter-msg');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!msg) return;
+      if (ok) {
+        msg.textContent = '¡Listo! Te avisaremos de las mejores subastas. 🎉';
+        form.reset();
+      } else {
+        msg.textContent = 'Ingresa un correo válido para continuar.';
+      }
+    });
+  }
+  bindNewsletter();
+  document.addEventListener('astro:after-swap', bindNewsletter);
+</script>

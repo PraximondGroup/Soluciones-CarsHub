@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<section class="container-app flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+  <span class="grid h-16 w-16 place-items-center rounded-2xl bg-primary/10 text-primary">
+    <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><path d="M9 22V12h6v10" />
+    </svg>
+  </span>
+  <p class="eyebrow mt-6">Próximamente</p>
+  <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-content sm:text-4xl">{title}</h1>
+  <p class="mt-4 max-w-md text-muted">{description}</p>
+  <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+    <a href="/" class="btn-primary">Volver al inicio</a>
+    <a href="/auctions" class="btn-ghost">Ver subastas</a>
+  </div>
+</section>

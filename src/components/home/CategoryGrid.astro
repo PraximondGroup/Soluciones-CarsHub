@@ -1,0 +1,33 @@
+---
+import SectionHeader from '@/components/home/SectionHeader.astro';
+import { categories } from '@/data/site';
+---
+
+<section class="container-app py-16 lg:py-20">
+  <SectionHeader
+    eyebrow="Explora por estilo"
+    title="Encuentra tu categoría"
+    subtitle="Desde compactos urbanos hasta superdeportivos. Filtra y entra directo a la acción."
+    href="/auctions"
+    hrefLabel="Todas las subastas"
+  />
+
+  <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+    {
+      categories.map((cat) => (
+        <a
+          href={cat.href}
+          class="card group flex flex-col items-center gap-3 px-4 py-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary"
+        >
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d={cat.icon} />
+            </svg>
+          </span>
+          <span class="font-display text-sm font-semibold text-content">{cat.name}</span>
+          <span class="text-xs text-muted">{cat.blurb}</span>
+        </a>
+      ))
+    }
+  </div>
+</section>

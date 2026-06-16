@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ComingSoon from '@/components/ComingSoon.astro';
+import { auctions } from '@/data/auctions';
+
+export const getStaticPaths = (() => {
+  return auctions.map((auction) => ({
+    params: { slug: auction.slug },
+    props: { auction },
+  }));
+}) satisfies GetStaticPaths;
+
+const { auction } = Astro.props;
+---
+<BaseLayout title={auction.title} description={`Subasta de ${auction.title} ${auction.year} en CarsHub.`}>
+  <ComingSoon
+    title={`${auction.title} (${auction.year})`}
+    description="La ficha completa con galería, especificaciones, historial de pujas y el panel para ofertar llegará en la siguiente entrega."
+  />
+</BaseLayout>

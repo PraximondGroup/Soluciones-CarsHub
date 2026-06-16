@@ -1,0 +1,64 @@
+---
+import type { Auction } from '@/lib/types';
+import SectionHeader from '@/components/home/SectionHeader.astro';
+import AuctionCard from '@/components/AuctionCard.astro';
+
+interface Props {
+  auctions: Auction[];
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  href?: string;
+  tinted?: boolean;
+}
+const { auctions, eyebrow, title, subtitle, href = '/auctions', tinted = false } = Astro.props;
+const id = `carousel-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<section class:list={['py-16 lg:py-20', tinted && 'bg-surface-2']}>
+  <div class="container-app">
+    <div class="flex items-end justify-between gap-4">
+      <div class="flex-1">
+        <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} href={href} />
+      </div>
+      <div class="hidden gap-2 sm:flex">
+        <button type="button" class="carousel-prev grid h-11 w-11 place-items-center rounded-full border border-border bg-surface text-content transition-colors hover:border-primary hover:text-primary" data-target={id} aria-label="Anterior">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <button type="button" class="carousel-next grid h-11 w-11 place-items-center rounded-full border border-border bg-surface text-content transition-colors hover:border-primary hover:text-primary" data-target={id} aria-label="Siguiente">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id={id}
+      class="no-scrollbar mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2"
+    >
+      {
+        auctions.map((auction) => (
+          <div class="w-[280px] shrink-0 snap-start sm:w-[320px]">
+            <AuctionCard auction={auction} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function bindCarousels() {
+    document.querySelectorAll<HTMLButtonElement>('.carousel-prev, .carousel-next').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = 'true';
+      btn.addEventListener('click', () => {
+        const track = document.getElementById(btn.dataset.target || '');
+        if (!track) return;
+        const dir = btn.classList.contains('carousel-next') ? 1 : -1;
+        track.scrollBy({ left: dir * Math.min(track.clientWidth * 0.8, 660), behavior: 'smooth' });
+      });
+    });
+  }
+  bindCarousels();
+  document.addEventListener('astro:after-swap', bindCarousels);
+</script>

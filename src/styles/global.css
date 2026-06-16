@@ -1,0 +1,150 @@
+@import 'tailwindcss';
+
+/* Enable class-based dark mode (toggled on <html class="dark">) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — CarsHub brand palette
+   Orange-led, with gold/amber accents for the Deluxe tier.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Brand */
+  --color-primary: #ff9800;
+  --color-primary-600: #f57c00;
+  --color-primary-700: #e65100;
+  --color-secondary: #ffc340;
+  --color-accent: #f9d7a0;
+  --color-gold: #d4af37;
+  --color-gold-soft: #e8c874;
+
+  /* Status */
+  --color-hot: #ff5722;
+  --color-live: #22c55e;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  /* Radii & shadows tuned for the "luxe" card look */
+  --radius-card: 16px;
+  --shadow-card: 0 4px 24px -6px rgb(0 0 0 / 0.12);
+  --shadow-card-hover: 0 18px 40px -12px rgb(0 0 0 / 0.22);
+}
+
+/* Semantic surface tokens — these flip automatically in dark mode.
+   Exposed to Tailwind as bg-surface, text-content, etc. via @theme inline. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-content: var(--content);
+  --color-muted: var(--muted);
+  --color-border: var(--border-c);
+}
+
+:root {
+  --bg: #f4f4f4;
+  --surface: #ffffff;
+  --surface-2: #fafafa;
+  --content: #222222;
+  --muted: #5b5b5b;
+  --border-c: #e6e6e6;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #1a1a1a;
+  --surface: #2a2a2a;
+  --surface-2: #232323;
+  --content: #f0f0f0;
+  --muted: #cccccc;
+  --border-c: #383838;
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--content);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Honor reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable component utilities
+--------------------------------------------------------------------------- */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold
+           transition-all duration-200 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold
+           text-white shadow-lg shadow-primary/25 transition-all duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+           focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+    background-image: linear-gradient(135deg, var(--color-primary), var(--color-primary-600));
+  }
+  .btn-primary:hover {
+    @apply -translate-y-0.5 shadow-xl shadow-primary/30;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold
+           border border-border bg-surface text-content transition-all duration-200
+           hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+  }
+
+  .card {
+    @apply rounded-2xl border border-border bg-surface;
+    box-shadow: var(--shadow-card);
+  }
+
+  .container-app {
+    @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-primary;
+  }
+
+  /* Subtle grain/glow used behind hero & deluxe sections */
+  .glow-orange {
+    background:
+      radial-gradient(60% 60% at 50% 0%, rgb(255 152 0 / 0.18), transparent 70%);
+  }
+}
+
+/* Hide scrollbars on horizontal carousels but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,71 @@
+---
+import { stats } from '@/data/site';
+---
+
+<section class="relative overflow-hidden">
+  <!-- Background image + gradient wash -->
+  <div class="absolute inset-0 -z-10">
+    <img
+      src="https://loremflickr.com/1920/1080/sportscar,luxury?lock=900"
+      alt=""
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      onerror="this.style.display='none'"
+    />
+    <div class="absolute inset-0 bg-gradient-to-br from-[#1a1a1a]/95 via-[#1a1a1a]/80 to-primary-700/40"></div>
+    <div class="absolute inset-0 glow-orange opacity-70"></div>
+  </div>
+
+  <div class="container-app relative grid gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-28">
+    <div class="max-w-2xl">
+      <p class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-secondary backdrop-blur">
+        <span class="inline-block h-2 w-2 animate-pulse rounded-full bg-live"></span>
+        Más de 240 subastas en vivo ahora mismo
+      </p>
+
+      <h1 class="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+        Tu próximo auto,
+        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"> al mejor postor</span>.
+      </h1>
+
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+        Subastas de vehículos en todo el Perú — desde económicos hasta deportivos y alta gama.
+        Transparencia total, historial verificado y pujas en tiempo real.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/auctions" class="btn-primary text-base">
+          Ver subastas activas
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+        <a href="/deluxe" class="btn border border-white/25 bg-white/5 text-white backdrop-blur hover:border-gold hover:text-gold">
+          Descubre Deluxe
+        </a>
+      </div>
+
+      <!-- Quick search -->
+      <form action="/auctions" method="get" class="mt-8 flex max-w-md overflow-hidden rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md" role="search">
+        <input
+          type="search"
+          name="q"
+          placeholder="Busca un Porsche, una Hilux…"
+          class="flex-1 bg-transparent px-4 text-sm text-white placeholder:text-white/50 focus:outline-none"
+          aria-label="Buscar autos"
+        />
+        <button type="submit" class="btn-primary px-5 py-2.5 text-sm">Buscar</button>
+      </form>
+    </div>
+
+    <!-- Stats card -->
+    <div class="grid grid-cols-2 gap-4">
+      {
+        stats.map((s) => (
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-colors hover:border-primary/50">
+            <p class="font-display text-3xl font-extrabold text-white">{s.value}</p>
+            <p class="mt-1 text-sm text-white/60">{s.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

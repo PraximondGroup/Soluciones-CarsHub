@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/home/Hero.astro';
+import CategoryGrid from '@/components/home/CategoryGrid.astro';
+import AuctionCarousel from '@/components/home/AuctionCarousel.astro';
+import DeluxePromo from '@/components/home/DeluxePromo.astro';
+import Testimonials from '@/components/home/Testimonials.astro';
+import NewsletterSignup from '@/components/home/NewsletterSignup.astro';
+import { popularAuctions, upcomingAuctions, activeAuctions } from '@/data/auctions';
+
+const endingSoon = [...activeAuctions]
+  .sort((a, b) => new Date(a.endsAt).getTime() - new Date(b.endsAt).getTime())
+  .slice(0, 8);
+---
+
+<BaseLayout>
+  <Hero />
+
+  <CategoryGrid />
+
+  <AuctionCarousel
+    eyebrow="🔥 Más populares"
+    title="Subastas que están ardiendo"
+    subtitle="Los lotes con más pujas en este momento. No te quedes fuera."
+    auctions={popularAuctions}
+    href="/auctions"
+  />
+
+  <DeluxePromo />
+
+  <AuctionCarousel
+    eyebrow="⏳ Cierran pronto"
+    title="Última oportunidad"
+    subtitle="Estas subastas están por finalizar. Haz tu mejor oferta antes de que termine el reloj."
+    auctions={endingSoon}
+    href="/auctions"
+    tinted
+  />
+
+  <AuctionCarousel
+    eyebrow="🆕 Próximamente"
+    title="Anticípate a la salida"
+    subtitle="Marca como seguidos los vehículos que se subastarán muy pronto."
+    auctions={[...upcomingAuctions, ...activeAuctions.slice(0, 4)]}
+    href="/auctions?status=upcoming"
+  />
+
+  <Testimonials />
+
+  <NewsletterSignup />
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+interface Props {
+  endsAt: string;
+  /** Compact = inline card variant; full = labeled boxes */
+  variant?: 'compact' | 'full';
+  class?: string;
+}
+const { endsAt, variant = 'compact', class: className = '' } = Astro.props;
+---
+
+{
+  variant === 'compact' ? (
+    <span
+      class:list={['countdown inline-flex items-center gap-1.5 font-semibold tabular-nums', className]}
+      data-ends={endsAt}
+      data-variant="compact"
+    >
+      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" stroke-linecap="round" />
+      </svg>
+      <span class="cd-value">—</span>
+    </span>
+  ) : (
+    <div class:list={['countdown flex gap-2', className]} data-ends={endsAt} data-variant="full">
+      {['d', 'h', 'm', 's'].map((u) => (
+        <div class="flex min-w-[3.25rem] flex-col items-center rounded-xl bg-surface-2 px-2 py-2">
+          <span class={`cd-${u} font-display text-xl font-bold tabular-nums text-content`}>00</span>
+          <span class="text-[10px] uppercase tracking-wider text-muted">
+            {u === 'd' ? 'días' : u === 'h' ? 'hrs' : u === 'm' ? 'min' : 'seg'}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+<script>
+  function pad(n: number) {
+    return String(n).padStart(2, '0');
+  }
+
+  function tick(el: HTMLElement) {
+    const ends = new Date(el.dataset.ends || '').getTime();
+    const diff = ends - Date.now();
+    const variant = el.dataset.variant;
+
+    if (diff <= 0) {
+      if (variant === 'compact') {
+        const v = el.querySelector('.cd-value');
+        if (v) v.textContent = 'Finalizada';
+        el.classList.add('text-muted');
+      } else {
+        el.querySelectorAll('span[class^="cd-"], span[class*=" cd-"]').forEach((s) => {
+          if (/cd-[dhms]/.test(s.className)) s.textContent = '00';
+        });
+      }
+      return false;
+    }
+
+    const d = Math.floor(diff / 86_400_000);
+    const h = Math.floor((diff % 86_400_000) / 3_600_000);
+    const m = Math.floor((diff % 3_600_000) / 60_000);
+    const s = Math.floor((diff % 60_000) / 1000);
+
+    if (variant === 'compact') {
+      const v = el.querySelector('.cd-value');
+      if (v) v.textContent = d > 0 ? `${d}d ${pad(h)}h` : `${pad(h)}:${pad(m)}:${pad(s)}`;
+      // urgency colour in the last hour
+      el.classList.toggle('text-hot', diff < 3_600_000);
+    } else {
+      const set = (sel: string, val: string) => {
+        const node = el.querySelector(sel);
+        if (node) node.textContent = val;
+      };
+      set('.cd-d', pad(d));
+      set('.cd-h', pad(h));
+      set('.cd-m', pad(m));
+      set('.cd-s', pad(s));
+    }
+    return true;
+  }
+
+  let timer: number | undefined;
+  function startCountdowns() {
+    if (timer) window.clearInterval(timer);
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.countdown'));
+    els.forEach(tick);
+    timer = window.setInterval(() => els.forEach(tick), 1000);
+  }
+
+  startCountdowns();
+  document.addEventListener('astro:after-swap', startCountdowns);
+</script>

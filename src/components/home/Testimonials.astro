@@ -1,0 +1,36 @@
+---
+import SectionHeader from '@/components/home/SectionHeader.astro';
+import { testimonials } from '@/data/site';
+---
+
+<section class="container-app py-16 lg:py-20">
+  <SectionHeader
+    eyebrow="Lo que dicen"
+    title="Compradores y vendedores felices"
+    subtitle="Miles de peruanos ya confían en CarsHub para su próxima compra o venta."
+  />
+
+  <div class="mt-10 grid gap-6 md:grid-cols-3">
+    {
+      testimonials.map((t) => (
+        <figure class="card flex flex-col p-7">
+          <div class="flex gap-0.5 text-secondary" aria-label={`${t.rating} de 5 estrellas`}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <svg class:list={['h-4 w-4', i < t.rating ? 'text-secondary' : 'text-border']} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 16.9 5.9 20.6l1.5-6.7L2.3 8.9l6.8-.6z" />
+              </svg>
+            ))}
+          </div>
+          <blockquote class="mt-4 flex-1 text-content/90 leading-relaxed">“{t.quote}”</blockquote>
+          <figcaption class="mt-6 flex items-center gap-3 border-t border-border pt-5">
+            <img src={t.avatar} alt="" width="44" height="44" loading="lazy" class="h-11 w-11 rounded-full object-cover" onerror="this.style.visibility='hidden'" />
+            <div>
+              <p class="font-semibold text-content">{t.name}</p>
+              <p class="text-xs text-muted">{t.role}</p>
+            </div>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
